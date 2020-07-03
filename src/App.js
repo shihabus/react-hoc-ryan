@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-const WithResize = () => {
+const WithResize = props => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const handleWindowResize = () => {
+    props.onChange(window.innerWidth);
     setWindowWidth(window.innerWidth);
   };
 
@@ -31,9 +32,12 @@ const ColoredWindow = ({ windowWidth }) => (
 );
 
 export default function App() {
+  const [windowWidth, setWindowWidth] = useState(0);
+  console.log(windowWidth);
   return (
-    <WithResize>
-      <ColoredWindow />
-    </WithResize>
+    <>
+      <WithResize onChange={x => setWindowWidth(x)} />
+      <ColoredWindow windowWidth={windowWidth} />
+    </>
   );
 }
