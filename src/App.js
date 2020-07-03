@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export default function App() {
+const WithResize = ({ children }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const handleWindowResize = () => {
@@ -15,15 +15,25 @@ export default function App() {
     };
   }, []);
 
+  return React.cloneElement(children, { windowWidth });
+};
+
+const ColoredWindow = ({ windowWidth }) => (
+  <div
+    className="App"
+    style={{
+      backgroundColor:
+        windowWidth > 500 ? "red" : windowWidth > 400 ? "yellow" : "green"
+    }}
+  >
+    <h2>{windowWidth}</h2>
+  </div>
+);
+
+export default function App() {
   return (
-    <div
-      className="App"
-      style={{
-        backgroundColor:
-          windowWidth > 500 ? "red" : windowWidth > 400 ? "yellow" : "green"
-      }}
-    >
-      <h2>{windowWidth}</h2>
-    </div>
+    <WithResize>
+      <ColoredWindow />
+    </WithResize>
   );
 }
