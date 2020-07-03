@@ -1,11 +1,29 @@
-import React from "react";
-import "./styles.css";
+import React, { useState, useEffect } from "react";
 
 export default function App() {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  const handleWindowResize = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
   return (
-    <div className="App">
-      <h1>Hello CodeSandbox</h1>
-      <h2>Start editing to see some magic happen!</h2>
+    <div
+      className="App"
+      style={{
+        backgroundColor:
+          windowWidth > 500 ? "red" : windowWidth > 400 ? "yellow" : "green"
+      }}
+    >
+      <h2>{windowWidth}</h2>
     </div>
   );
 }
