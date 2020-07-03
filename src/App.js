@@ -15,7 +15,7 @@ const WithResize = props => {
     };
   }, []);
 
-  return props.onChange(windowWidth);
+  return props.children(windowWidth);
 };
 
 const ColoredWindow = ({ windowWidth }) => (
@@ -31,11 +31,11 @@ const ColoredWindow = ({ windowWidth }) => (
 );
 
 export default function App() {
-  const [windowWidth, setWindowWidth] = useState(0);
-  console.log(windowWidth);
   return (
     <>
-      <WithResize onChange={x => <ColoredWindow windowWidth={x} />} />
+      <WithResize>
+        {windowWidth => <ColoredWindow windowWidth={windowWidth} />}
+      </WithResize>
     </>
   );
 }
