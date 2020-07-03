@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from "react";
 
-const WithResize = ({ children }) => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+const withResizer = Compo => {
+  const WithResize = () => {
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  const handleWindowResize = () => {
-    setWindowWidth(window.innerWidth);
+    const handleWindowResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    useEffect(() => {
+      window.addEventListener("resize", handleWindowResize);
+
+      return () => {
+        window.removeEventListener("resize", handleWindowResize);
+      };
+    }, []);
+
+    return <Compo windowWidth={windowWidth} />;
   };
 
-  useEffect(() => {
-    window.addEventListener("resize", handleWindowResize);
-
-    return () => {
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  }, []);
-
-  return React.cloneElement(children, { windowWidth });
+  return WithResize();
 };
 
 const ColoredWindow = ({ windowWidth }) => (
@@ -31,9 +35,5 @@ const ColoredWindow = ({ windowWidth }) => (
 );
 
 export default function App() {
-  return (
-    <WithResize>
-      <ColoredWindow />
-    </WithResize>
-  );
+  return withResizer(ColoredWindow);
 }
